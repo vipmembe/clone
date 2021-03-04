@@ -1,8 +1,5 @@
 #!/bin/sh
 yum install make wget curl jq git -y
-yum -y update
-yum -y install epel-release
-yum repolist
 yum install iptables-services -y
 random() {
 	tr </dev/urandom -dc A-Za-z0-9 | head -c5
