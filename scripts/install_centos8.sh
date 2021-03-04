@@ -5,6 +5,7 @@ random() {
 	echo
 }
 
+NETWORK_INTERFACE_NAME=$(ip route get 8.8.8.8 | sed -nr 's/.*dev ([^\ ]+).*/\1/p')
 array=(1 2 3 4 5 6 7 8 9 0 a b c d e f)
 gen64() {
 	ip64() {
@@ -29,7 +30,7 @@ install_3proxy() {
 #    systemctl enable 3proxy
     echo "* hard nofile 999999" >>  /etc/security/limits.conf
     echo "* soft nofile 999999" >>  /etc/security/limits.conf
-    echo "net.ipv6.conf.ens3.proxy_ndp=1" >> /etc/sysctl.conf
+    echo "net.ipv6.conf.${NETWORK_INTERFACE_NAME}.proxy_ndp=1" >> /etc/sysctl.conf
     echo "net.ipv6.conf.all.proxy_ndp=1" >> /etc/sysctl.conf
     echo "net.ipv6.conf.default.forwarding=1" >> /etc/sysctl.conf
     echo "net.ipv6.conf.all.forwarding=1" >> /etc/sysctl.conf
@@ -111,9 +112,9 @@ WORKDATA="${WORKDIR}/data.txt"
 mkdir $WORKDIR && cd $_
 
 IP4=$(curl -4 -s icanhazip.com)
-IP6=$(ip addr show dev eth0 | sed -e's/^.*inet6 \([^ ]*\)\/.*$/\1/;t;d' | head -1| cut -f1-4 -d':')
+IP6=$(ip addr show dev ${NETWORK_INTERFACE_NAME} | sed -e's/^.*inet6 \([^ ]*\)\/.*$/\1/;t;d' | head -1| cut -f1-4 -d':')
 
-echo "Internal ip = ${IP4}. Exteranl sub for ip6 = ${IP6}"
+echo "Internal ip = ${IP4}. Exteranl sub for ip6 = ${IP6}. Network interface name = ${NETWORK_INTERFACE_NAME}"
 
 echo "How many proxy do you want to create? Example 500"
 read COUNT
