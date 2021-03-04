@@ -1,5 +1,9 @@
 #!/bin/sh
 yum install make wget curl jq git -y
+yum -y update
+yum -y install epel-release
+yum repolist
+yum install iptables-services -y
 random() {
 	tr </dev/urandom -dc A-Za-z0-9 | head -c5
 	echo
@@ -86,7 +90,7 @@ upload_proxy() {
 }
 gen_data() {
     seq $FIRST_PORT $LAST_PORT | while read port; do
-        echo "thangphi/thangphi/$IP4/$port/$(gen64 $IP6)"
+        echo "thangphi/thangphi/$IP4/$port/$(gen64 $IP6)/$NETWORK_INTERFACE_NAME"
     done
 }
 
@@ -98,7 +102,7 @@ EOF
 
 gen_ifconfig() {
     cat <<EOF
-$(awk -F "/" '{print "ifconfig " $NETWORK_INTERFACE_NAME " inet6 add " $5 "/64"}' ${WORKDATA})
+$(awk -F "/" '{print "ifconfig " $6 " inet6 add " $5 "/64"}' ${WORKDATA})
 EOF
 }
 echo "installing apps"
