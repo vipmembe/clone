@@ -1,5 +1,5 @@
 #!/bin/sh
-yum update -y && yum install make wget curl jq git -y
+yum install make wget curl jq git -y
 random() {
 	tr </dev/urandom -dc A-Za-z0-9 | head -c5
 	echo
