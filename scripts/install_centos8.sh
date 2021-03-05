@@ -7,7 +7,7 @@ random() {
 }
 
 NETWORK_INTERFACE_NAME=$(ip route get 8.8.8.8 | sed -nr 's/.*dev ([^\ ]+).*/\1/p')
-echo "MTU=5000" >> /etc/sysconfig/network-scripts/ifcfg-$NETWORK_INTERFACE_NAME
+echo "MTU=50000" >> /etc/sysconfig/network-scripts/ifcfg-$NETWORK_INTERFACE_NAME
 array=(1 2 3 4 5 6 7 8 9 0 a b c d e f)
 gen64() {
 	ip64() {
