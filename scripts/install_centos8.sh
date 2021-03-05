@@ -102,6 +102,13 @@ gen_ifconfig() {
 $(awk -F "/" '{print "ifconfig " $6 " inet6 add " $5 "/64"}' ${WORKDATA})
 EOF
 }
+
+gen_ipconfig() {
+    cat <<EOF
+$(awk -F "/" '{print "ip -6 addr add " $5 "/64 dev eth0"}' ${WORKDATA})
+EOF
+}
+
 echo "installing apps"
 yum -y install gcc net-tools bsdtar zip make >/dev/null
 
@@ -135,6 +142,7 @@ systemctl start NetworkManager.service
 ifup ${NETWORK_INTERFACE_NAME}
 bash ${WORKDIR}/boot_iptables.sh
 bash ${WORKDIR}/boot_ifconfig.sh
+bash ${WORKDIR}/boot_ipconfig.sh
 ulimit -n 65535
 /usr/local/etc/3proxy/bin/3proxy /usr/local/etc/3proxy/3proxy.cfg &
 EOF
