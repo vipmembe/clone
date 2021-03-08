@@ -59,15 +59,22 @@ setgid 65535
 setuid 65535
 stacksize 6291456 
 flush
-auth strong
-users thangphi:CL:thangphi
-
-$(awk -F "/" '{print "auth strong\n" \
-"allow thangphi \n" \
+auth none
+$(awk -F "/" '{print "auth none\n" \
 "proxy -6 -n -a -p" $4 " -i" $3 " -e"$5"\n" \
 "flush\n"}' ${WORKDATA})
 EOF
 }
+
+#auth strong
+#users thangphi:CL:thangphi
+
+#$(awk -F "/" '{print "auth strong\n" \
+#"allow thangphi \n" \
+#"proxy -6 -n -a -p" $4 " -i" $3 " -e"$5"\n" \
+#"flush\n"}' ${WORKDATA})
+#EOF
+#}
 
 gen_proxy_file_for_user() {
     cat >proxy.txt <<EOF
